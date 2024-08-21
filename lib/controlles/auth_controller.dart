@@ -4,11 +4,9 @@ import 'package:get/get.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../consts/firebase_constants.dart';
 import '../reusables/toast_class.dart';
-import '../views/main_screen/main_screen.dart';
-
+import '../views/dashboard_screens/dasboard_screen.dart';
 
 class AuthController extends GetxController {
-
   var isLoading = false.obs;
   var name = TextEditingController();
   var email = TextEditingController();
@@ -16,62 +14,69 @@ class AuthController extends GetxController {
   var phoneNumber = TextEditingController();
   var referenceCode = TextEditingController();
 
-
-
-
-
-  Future<UserCredential?> login({required BuildContext context}) async{
-    UserCredential ? userCredential ;
-    try{
+  Future<UserCredential?> login({required BuildContext context}) async {
+    UserCredential? userCredential;
+    try {
       isLoading(true);
-      auth.signInWithEmailAndPassword(email: email.text.trim(), password: password.text.trim()).then((value){
+      userCredential = await auth.signInWithEmailAndPassword(
+        email: email.text.trim(),
+        password: password.text.trim(),
+      );
+      if (userCredential != null) {
         isLoading(false);
         ToastClass.showToastClass(context: context, message: 'Login successfully');
-        Get.offAll(()=>const  MainScreen(),transition: Transition.cupertino);
-      });
-    }on FirebaseAuthException catch(e){
+        Get.offAll(() => Dashboardscreen(currentUserid: userCredential!.user!.uid), transition: Transition.cupertino);
+      }
+    } on FirebaseAuthException catch (e) {
       logout(context: context);
       isLoading(false);
       ToastClass.showToastClass(context: context, message: e.toString());
     }
-    return userCredential ;
+    return userCredential;
   }
 
-  Future<UserCredential?> signup({required BuildContext context}) async{
-    UserCredential ? userCredential ;
-    try{
+  Future<UserCredential?> signup({required BuildContext context}) async {
+    UserCredential? userCredential;
+    try {
       isLoading(true);
-      auth.createUserWithEmailAndPassword(email:email.text.trim(), password: password.text.trim()).then((value){
+      userCredential = await auth.createUserWithEmailAndPassword(
+        email: email.text.trim(),
+        password: password.text.trim(),
+      );
+      if (userCredential != null) {
         storeUserData();
-        ToastClass.showToastClass(context: context, message: 'Account Created successfully');
         isLoading(false);
-        Get.offAll(()=>const MainScreen());
-      });
-    }on FirebaseAuthException catch(e){
+        ToastClass.showToastClass(context: context, message: 'Account Created successfully');
+        Get.offAll(() => Dashboardscreen(currentUserid: userCredential!.user!.uid));
+      }
+    } on FirebaseAuthException catch (e) {
       isLoading(false);
       ToastClass.showToastClass(context: context, message: e.toString());
     }
-    return userCredential ;
+    return userCredential;
   }
 
-  Future<UserCredential?> forgotPassword({required BuildContext context}) async{
-    UserCredential ? userCredential ;
-    try{
+  Future<UserCredential?> forgotPassword(
+      {required BuildContext context}) async {
+    UserCredential? userCredential;
+    try {
       isLoading(true);
-      auth.sendPasswordResetEmail(email: email.text.trim(),);
-    }on FirebaseAuthException catch(e){
+      auth.sendPasswordResetEmail(
+        email: email.text.trim(),
+      );
+    } on FirebaseAuthException catch (e) {
       isLoading(false);
       ToastClass.showToastClass(context: context, message: e.toString());
     }
-    return userCredential ;
+    return userCredential;
   }
 
-  Future logout({required BuildContext context}) async{
-    try{
+  Future logout({required BuildContext context}) async {
+    try {
       isLoading(true);
       await auth.signOut();
-      isLoading= false.obs;
-    }on FirebaseAuthException catch(e){
+      isLoading = false.obs;
+    } on FirebaseAuthException catch (e) {
       isLoading(false);
       ToastClass.showToastClass(context: context, message: e.toString());
     }
@@ -79,17 +84,15 @@ class AuthController extends GetxController {
 
   // store user data
   storeUserData() async {
-    DocumentReference store =  fireStore.collection(userCollection).doc(currentUser!.uid);
+    DocumentReference store =
+        fireStore.collection(userCollection).doc(currentUser!.uid);
     await store.set({
-      'name':name.text.trim(),
-      'password':password.text.trim(),
-      'phone':email.text.trim(),
-      'reference':referenceCode.text.isEmpty ? 'none' : referenceCode.text.trim(),
-      'id':currentUser!.uid,
+      'name': name.text.trim(),
+      'password': password.text.trim(),
+      'phone': email.text.trim(),
+      'reference':
+          referenceCode.text.isEmpty ? 'none' : referenceCode.text.trim(),
+      'id': currentUser!.uid,
     });
   }
-
-
-
-
 }

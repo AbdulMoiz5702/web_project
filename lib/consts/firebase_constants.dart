@@ -10,6 +10,7 @@ FirebaseFirestore fireStore = FirebaseFirestore.instance;
 FirebaseStorage firebaseStorage = FirebaseStorage.instance;
 User ? currentUser = auth.currentUser ;
 String user = auth.currentUser!.uid;
+// User? get currentUser => FirebaseAuth.instance.currentUser;
 
 
 const userCollection = 'users';

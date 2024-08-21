@@ -1,7 +1,10 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:website_project/views/auth_screens/login_screen.dart';
 import 'package:website_project/views/auth_screens/sign_up_screen.dart';
+import 'package:website_project/views/dashboard_screens/dasboard_screen.dart';
+import 'package:website_project/views/splash_screen/splash_screen.dart';
 
 
 void main() async {
@@ -27,6 +30,12 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       title: 'Flutter Demo',
       home: SignupScreen(),
+      getPages: [
+        // GetPage(name: '/', page: () => SplashScreen()), // Your initial screen
+        GetPage(name: '/', page: () => Dashboardscreen(currentUserid: '7zihJ9TYRoSHI1HM1TSQpdAHoz03')), // Your main screen
+        GetPage(name: '/login', page: () => LoginScreen()),
+        GetPage(name: '/signup', page: () => SignupScreen()),
+      ],
     );
   }
 }
