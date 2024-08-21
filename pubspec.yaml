@@ -41,6 +41,7 @@ dependencies:
   firebase_storage:
   get:
   flutter_styled_toast: ^2.2.1
+  shimmer:
 
 dev_dependencies:
   flutter_test:

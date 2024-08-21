@@ -29,10 +29,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       title: 'Flutter Demo',
-      home: SignupScreen(),
+      home: SplashScreen(),
       getPages: [
         // GetPage(name: '/', page: () => SplashScreen()), // Your initial screen
-        GetPage(name: '/', page: () => Dashboardscreen(currentUserid: '7zihJ9TYRoSHI1HM1TSQpdAHoz03')), // Your main screen
+        GetPage(name: '/', page: () => DashBoardScreen()), // Your main screen
         GetPage(name: '/login', page: () => LoginScreen()),
         GetPage(name: '/signup', page: () => SignupScreen()),
       ],

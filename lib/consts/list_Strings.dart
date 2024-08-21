@@ -3,6 +3,9 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:website_project/consts/colors.dart';
 
+
+const String headerImage = 'assets/header_png.png';
+
 List<String> tabbarbutton = [
   'home',
   'How it works',
@@ -34,7 +37,6 @@ List<Color> tabbarsignupcolor = [
 ];
 
 List<Color> tabbarsignuptextcolor = [
-
   whiteColor,
   blueColor
 ];

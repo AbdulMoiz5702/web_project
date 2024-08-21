@@ -5,15 +5,15 @@ import '../consts/colors.dart';
 Widget largeText(
     {required String title,
     context,
-    double fontSize = 22,
-    fontWeight = FontWeight.bold,
+    double fontSize = 28,
+    fontWeight = FontWeight.w700,
       color = primaryTextColor,
     }) {
   return Text(
     title,
     style: TextStyle(
-        fontSize:  fontSize,
-        fontWeight: FontWeight.bold,
+        fontSize:  fontSize.toDouble(),
+        fontWeight: fontWeight,
       color: color,
     ),
   );
@@ -22,15 +22,15 @@ Widget largeText(
 Widget mediumText(
     {required String title,
       context,
-      double fontSize = 18,
-      fontWeight = FontWeight.bold,
+      double fontSize = 14,
+      fontWeight = FontWeight.w500,
      Color color = primaryTextColor,
     }) {
   return Text(
     title,
     style: TextStyle(
-      fontSize:  fontSize,
-      fontWeight: FontWeight.bold,
+      fontSize:  fontSize.toDouble(),
+      fontWeight: fontWeight,
       color: color,
     ),
   );
@@ -48,7 +48,7 @@ Widget smallText(
   return Text(
     title,
     style: TextStyle(
-      fontSize: fontSize,
+      fontSize: fontSize.toDouble(),
       fontWeight: fontWeight,
       color: color,
       height: height.toDouble(),

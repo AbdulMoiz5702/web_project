@@ -19,8 +19,7 @@ class SplashController extends GetxController {
     Future.delayed(Duration.zero, () {
       final userId = currentUser?.uid;
       if (userId != null) {
-        print('User ID: $userId');  // Log the user ID
-        Get.offAll(() => Dashboardscreen(currentUserid: userId));
+        Get.offAll(() => DashBoardScreen(currentUserId: userId));
       } else {
         print('No user found, navigating to login screen');
         Get.offAll(() => LoginScreen());
