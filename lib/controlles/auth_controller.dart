@@ -15,6 +15,7 @@ class AuthController extends GetxController {
   var phoneNumber = TextEditingController();
   var referenceCode = TextEditingController();
   String? referrerId;
+  String? referrerName;
 
 
   @override
@@ -27,13 +28,18 @@ class AuthController extends GetxController {
     try {
       // Get the current URL
       final uri = Uri.parse(html.window.location.href);
-      print('url : $uri');
-      // Extract the 'referrerId' query parameter
-      referrerId = uri.queryParameters['referrerId'];
-      // Handle the referral ID as needed (e.g., store it or process it)
+      print('URL: $uri');
+      // Extract the 'referrerId' and 'username' query parameters
+      final referrerId = uri.queryParameters['referrerId'];
+      final username = uri.queryParameters['username'];
+      // Handle the referral ID and username as needed (e.g., store it or process it)
       if (referrerId != null) {
         print('Referrer ID: $referrerId');
       }
+      if (username != null) {
+        print('Username: $username');
+      }
+
     } catch (e) {
       print('Error initializing referral link: $e');
     }
@@ -114,6 +120,7 @@ class AuthController extends GetxController {
       'password': password.text.trim(),
       'id': userId,
       'wallet': '2000',
+      'referredByName': referrerName ?? 'none',
       'referredBy': referrerId ?? 'none',
       'referrals': FieldValue.arrayUnion([]),
       'referralCount': 0,
