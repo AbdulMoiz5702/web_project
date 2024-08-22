@@ -5,6 +5,17 @@ import 'package:website_project/consts/colors.dart';
 
 
 const String headerImage = 'assets/header_png.png';
+const String depositImage = 'assets/deposit.png';
+const String withdrawImage = 'assets/withdraw.png';
+const String  inviteImage = 'assets/invite.png';
+const String  totalInvestmentImage = 'assets/total_investment.png';
+const String  totalWithdrawImage = 'assets/total_withdraw.png';
+const String  totalEarningsImage = 'assets/total_earnings.png';
+const String  teamInvestmentImage = 'assets/team_investment.png';
+const String  totalBonusImage = 'assets/total_bonous.png';
+const String  totalTeamsImage = 'assets/total_teams.png';
+
+
 
 List<String> tabbarbutton = [
   'home',
