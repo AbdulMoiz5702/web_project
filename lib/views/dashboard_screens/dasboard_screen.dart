@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:website_project/controlles/dashboard_controller.dart';
 import 'package:website_project/services/firestore_services.dart';
 import '../../consts/colors.dart';
 import '../../consts/list_Strings.dart';
@@ -18,6 +20,8 @@ class DashBoardScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     print(currentUserId);
+    var referralLink = 'https://website-4fa8c.web.app/?referrerId=$currentUserId';
+    var controller = Get.put(DashboardController());
     return Scaffold(
       backgroundColor: backgroundColor,
       body: Column(
@@ -49,9 +53,9 @@ class DashBoardScreen extends StatelessWidget {
                 } else if (snapshot.hasData) {
                   var data = snapshot.data!.data() as Map<String, dynamic>;
                   return Container(
-                    margin: EdgeInsets.all(10),
-                    padding: EdgeInsets.all(15),
-                    height: MediaQuery.sizeOf(context).height * 0.25,
+                    margin: EdgeInsets.all(5),
+                    padding: EdgeInsets.symmetric(horizontal: 12,vertical: 8),
+                    height: MediaQuery.sizeOf(context).height * 0.27,
                     width: MediaQuery.sizeOf(context).width * 1,
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(15),
@@ -87,7 +91,7 @@ class DashBoardScreen extends StatelessWidget {
                                     ],
                                   ),
                                   Sized(
-                                    height: 0.01,
+                                    height: 0.005,
                                     width: 0,
                                   ),
                                   Container(
@@ -101,94 +105,57 @@ class DashBoardScreen extends StatelessWidget {
                                   ),
                                   largeText(title: data['name'], color: whiteColor,fontSize: 16),
                                 ]),
-                            Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Row(
-                                    crossAxisAlignment: CrossAxisAlignment.end,
-                                    children: [
-                                      mediumText(
-                                          title: 'Referral Code :',
-                                          color: whiteColor.withOpacity(0.5),
-                                          fontWeight: FontWeight.w400),
-                                      Sized(
-                                        width: 0.02,
-                                        height: 0,
-                                      ),
-                                      IconButton(onPressed: (){
-                                        Clipboard.setData(ClipboardData(text: data['id']));
-                                        ScaffoldMessenger.of(context).showSnackBar(
-                                          SnackBar(
-                                            content: Text('Referral Code copied to clipboard'),
-                                            duration: Duration(seconds: 1),
-                                          ),
-                                        );
-                                      }, icon: Icon(Icons.copy, color: whiteColor),)
-                                    ],
-                                  ),
-                                  Sized(
-                                    height: 0.01,
-                                    width: 0,
-                                  ),
-                                  Container(
-                                    height: 1,
-                                    width: MediaQuery.sizeOf(context).width * 0.3,
-                                    color: whiteColor,
-                                  ),
-                                  Sized(
-                                    height: 0.02,
-                                    width: 0,
-                                  ),
-                                  smallText(title: data['id'], color: whiteColor,fontWeight: FontWeight.bold,),
-                                ]),
                           ],
                         ),
+                        Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                children: [
+                                  mediumText(
+                                      title: 'Referral Code :',
+                                      color: whiteColor.withOpacity(0.5),
+                                      fontWeight: FontWeight.w400,fontSize: 12),
+                                  Sized(
+                                    width: 0.01,
+                                    height: 0,
+                                  ),
+                                  GestureDetector(
+                                    onTap: (){
+                                      controller.copyToClipboard(referralLink, context);
+                                    },
+                                    child:Icon(Icons.copy, color: whiteColor,size: 20,) ,
+                                  )
+                                ],
+                              ),
+                              Sized(
+                                height: 0.005,
+                                width: 0,
+                              ),
+                              Container(
+                                height: 1,
+                                width: MediaQuery.sizeOf(context).width * 0.3,
+                                color: whiteColor,
+                              ),
+                              Sized(
+                                height: 0.02,
+                                width: 0,
+                              ),
+                              smallText(title: data['id'], color: whiteColor,fontWeight: FontWeight.bold,),
+                            ]),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Row(
-                                    crossAxisAlignment: CrossAxisAlignment.end,
-                                    children: [
-
-                                      Sized(
-                                        width: 0.02,
-                                        height: 0,
-                                      ),
-                                      Icon(Icons.mail, color: whiteColor),
-                                    ],
-                                  ),
-                                  Sized(
-                                    height: 0.01,
-                                    width: 0,
-                                  ),
-                                  Container(
-                                    height: 1,
-                                    width: MediaQuery.sizeOf(context).width * 0.3,
-                                    color: whiteColor,
-                                  ),
-                                  Sized(
-                                    height: 0.01,
-                                    width: 0,
-                                  ),
-                                  largeText(title: data['email'], color: whiteColor,fontSize: 16),
-                                ]),
-                            Column(
-                              children: [
-                                mediumText(title: 'Account Balance :',color: whiteColor,fontWeight: FontWeight.bold,fontSize: 15),
-                                Sized(height: 0.01,width: 0,),
-                                Container(
-                                  padding: EdgeInsets.all(5),
-                                  alignment: Alignment.center,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(5),
-                                    color: whiteColor,
-                                  ),
-                                  child: mediumText(title: ' Rs ${data['wallet']}  ',color: blueColor,fontWeight: FontWeight.bold,fontSize: 18),
-                                ),
-                              ],
+                            mediumText(title: 'Account Balance :',color: whiteColor,fontWeight: FontWeight.bold,fontSize: 15),
+                            Container(
+                              padding: EdgeInsets.all(5),
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(5),
+                                color: whiteColor,
+                              ),
+                              child: mediumText(title: ' Rs ${data['wallet']}  ',color: blueColor,fontWeight: FontWeight.bold,fontSize: 18),
                             )
                           ],
                         ),
@@ -203,7 +170,7 @@ class DashBoardScreen extends StatelessWidget {
                 }
               }),
           MainContainer(
-            height: 0.615,
+            height: 0.61,
             child: Column(
             children: [
               Padding(
@@ -218,7 +185,7 @@ class DashBoardScreen extends StatelessWidget {
                 ),
               ),
               MainContainer(
-                height: 0.46,
+                height: 0.45,
                 color: whiteColor,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,

@@ -24,7 +24,7 @@ class SecondaryRoundedButton extends StatelessWidget {
         this.elevation = 0,
         required this.wallet,
         required this.onTap,
-        this.height = 0.18,
+        this.height = 0.19,
         this.width = 0.28,
         this.color = blueColor,
         required this.imagePath,

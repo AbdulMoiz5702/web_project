@@ -11,9 +11,22 @@ import 'package:website_project/views/auth_screens/login_screen.dart';
 
 
 
-class SignupScreen extends StatelessWidget {
+class SignupScreen extends StatefulWidget {
   const SignupScreen({super.key});
 
+  @override
+  State<SignupScreen> createState() => _SignupScreenState();
+}
+
+class _SignupScreenState extends State<SignupScreen> {
+  var controller = Get.put(AuthController());
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    controller.onInit();
+
+  }
   @override
   Widget build(BuildContext context) {
     var controller = Get.put(AuthController());
