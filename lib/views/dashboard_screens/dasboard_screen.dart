@@ -103,6 +103,38 @@ class DashBoardScreen extends StatelessWidget {
                                   ),
                                   largeText(title: data['name'], color: whiteColor,fontSize: 16),
                                 ]),
+                            Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    children: [
+                                      mediumText(
+                                          title: 'REFER BY',
+                                          color: whiteColor.withOpacity(0.5),
+                                          fontWeight: FontWeight.w400),
+                                      Sized(
+                                        width: 0.02,
+                                        height: 0,
+                                      ),
+                                      Icon(Icons.person_pin, color: whiteColor),
+                                    ],
+                                  ),
+                                  Sized(
+                                    height: 0.005,
+                                    width: 0,
+                                  ),
+                                  Container(
+                                    height: 1,
+                                    width: MediaQuery.sizeOf(context).width * 0.3,
+                                    color: whiteColor,
+                                  ),
+                                 Sized(
+                                    height: 0.01,
+                                    width: 0,
+                                  ),
+                                  data['referredByName'] == 'none'? smallText(title: 'No referral', color: whiteColor,) :  largeText(title: data['referredByName'], color: whiteColor,fontSize: 16),
+                                ]),
                           ],
                         ),
                         Column(
