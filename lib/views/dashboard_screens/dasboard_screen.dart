@@ -19,8 +19,6 @@ class DashBoardScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(currentUserId);
-    var referralLink = 'https://website-4fa8c.web.app/?referrerId=$currentUserId';
     var controller = Get.put(DashboardController());
     return Scaffold(
       backgroundColor: backgroundColor,
@@ -123,6 +121,7 @@ class DashBoardScreen extends StatelessWidget {
                                   ),
                                   GestureDetector(
                                     onTap: (){
+                                      final referralLink = 'https://website-4fa8c.web.app/?referrerId=${data['id']}&username=${data['name']}';
                                       controller.copyToClipboard(referralLink, context);
                                     },
                                     child:Icon(Icons.copy, color: whiteColor,size: 20,) ,
