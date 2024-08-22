@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import '../consts/firebase_constants.dart';
 import '../reusables/toast_class.dart';
 import '../views/dashboard_screens/dasboard_screen.dart';
+import 'dart:html' as html;
 
 class AuthController extends GetxController {
   var isLoading = false.obs;
@@ -13,6 +14,30 @@ class AuthController extends GetxController {
   var password = TextEditingController();
   var phoneNumber = TextEditingController();
   var referenceCode = TextEditingController();
+  String? referrerId;
+
+
+  @override
+  void onInit() {
+    super.onInit();
+    initReferralLink();
+  }
+
+  Future<void> initReferralLink() async {
+    try {
+      // Get the current URL
+      final uri = Uri.parse(html.window.location.href);
+      print('url : $uri');
+      // Extract the 'referrerId' query parameter
+      referrerId = uri.queryParameters['referrerId'];
+      // Handle the referral ID as needed (e.g., store it or process it)
+      if (referrerId != null) {
+        print('Referrer ID: $referrerId');
+      }
+    } catch (e) {
+      print('Error initializing referral link: $e');
+    }
+  }
 
    login({required BuildContext context}) async {
     try {
@@ -40,7 +65,7 @@ class AuthController extends GetxController {
         password: password.text.trim(),
       ).then((value){
         print('Userid : ${value.user!.uid}');
-        storeUserData(value.user!.uid);
+        storeUserData(value.user!.uid,referrerId);
         isLoading(false);
         Get.offAll(() => DashBoardScreen(currentUserId: value.user!.uid,));
         ToastClass.showToastClass(context: context, message: 'Account Created successfully');
@@ -79,16 +104,34 @@ class AuthController extends GetxController {
   }
 
   // store user data
-  storeUserData(userId) async {
-    DocumentReference store = fireStore.collection(userCollection).doc(userId);
+  Future<void> storeUserData(String userId, String? referrerId) async {
+    DocumentReference store = fireStore.collection('users').doc(userId);
+
     await store.set({
-      'name': name.text.trim(),
-      'email':email.text.trim(),
-      'phone': phoneNumber.text.trim(),
+      'name': name.text.trim(),  // Add other user details here as needed
+      'email': email.text.trim(),
+      'phone': phoneNumber.text.trim(),  // Add other user details here as needed
       'password': password.text.trim(),
-      'reference': referenceCode.text.isEmpty ? 'none' : referenceCode.text.trim(),
       'id': userId,
       'wallet': '2000',
+      'referredBy': referrerId ?? 'none',
+      'referrals': FieldValue.arrayUnion([]),
+      'referralCount': 0,
     });
+
+    if (referrerId != null && referrerId.isNotEmpty) {
+      final referrerDocRef = fireStore.collection('users').doc(referrerId);
+      final referrerDoc = await referrerDocRef.get();
+      if (referrerDoc.exists) {
+        final referrals = List<String>.from(referrerDoc.data()?['referrals'] ?? []);
+        if (!referrals.contains(userId)) {
+          referrals.add(userId);
+          await referrerDocRef.update({
+            'referrals': referrals,
+            'referralCount': referrals.length,
+          });
+        }
+      }
+    }
   }
 }

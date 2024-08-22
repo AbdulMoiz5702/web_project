@@ -42,6 +42,7 @@ dependencies:
   get:
   flutter_styled_toast: ^2.2.1
   shimmer:
+  uni_links:
 
 dev_dependencies:
   flutter_test:
