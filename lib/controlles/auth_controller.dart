@@ -120,7 +120,7 @@ class AuthController extends GetxController {
     });
 
     if (referrerId != null && referrerId.isNotEmpty) {
-      final referrerDocRef = fireStore.collection('users').doc(referrerId);
+      final referrerDocRef = fireStore.collection(userCollection).doc(referrerId);
       final referrerDoc = await referrerDocRef.get();
       if (referrerDoc.exists) {
         final referrals = List<String>.from(referrerDoc.data()?['referrals'] ?? []);
