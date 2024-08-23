@@ -153,7 +153,8 @@ class DashBoardScreen extends StatelessWidget {
                                   ),
                                   GestureDetector(
                                     onTap: (){
-                                      final referralLink = 'https://website-4fa8c.web.app/?referrerId=${data['id']}&username=${data['name']}';
+                                      var encodedUsername = Uri.encodeComponent(data['name']);
+                                      final referralLink = 'https://website-4fa8c.web.app/?referrerId=${data['id']}&username=$encodedUsername';
                                       controller.copyToClipboard(referralLink, context);
                                     },
                                     child:Icon(Icons.copy, color: whiteColor,size: 20,) ,

@@ -29,15 +29,13 @@ class AuthController extends GetxController {
       // Get the current URL
       final uri = Uri.parse(html.window.location.href);
       print('URL: $uri');
-      // Extract the 'referrerId' and 'username' query parameters
-      final referrerId = uri.queryParameters['referrerId'];
-      final username = uri.queryParameters['username'];
-      // Handle the referral ID and username as needed (e.g., store it or process it)
+       referrerId = uri.queryParameters['referrerId'];
+       referrerName = uri.queryParameters['username'];
       if (referrerId != null) {
         print('Referrer ID: $referrerId');
       }
-      if (username != null) {
-        print('Username: $username');
+      if (referrerName != null) {
+        print('Username: $referrerName');
       }
 
     } catch (e) {
@@ -71,7 +69,7 @@ class AuthController extends GetxController {
         password: password.text.trim(),
       ).then((value){
         print('Userid : ${value.user!.uid}');
-        storeUserData(value.user!.uid,referrerId);
+        storeUserData(value.user!.uid,referrerId,referrerName);
         isLoading(false);
         Get.offAll(() => DashBoardScreen(currentUserId: value.user!.uid,));
         ToastClass.showToastClass(context: context, message: 'Account Created successfully');
@@ -110,8 +108,8 @@ class AuthController extends GetxController {
   }
 
   // store user data
-  Future<void> storeUserData(String userId, String? referrerId) async {
-    DocumentReference store = fireStore.collection('users').doc(userId);
+  Future<void> storeUserData(String userId, String? referrerId,String? referrerName) async {
+    DocumentReference store = fireStore.collection(userCollection).doc(userId);
 
     await store.set({
       'name': name.text.trim(),  // Add other user details here as needed
