@@ -17,8 +17,8 @@ class DashboardController extends GetxController{
       );
     }).catchError((error) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Failed to copy referral link.'),
+         SnackBar(
+          content: Text('${error.toString()}'),
           duration: Duration(seconds: 2),
         ),
       );
