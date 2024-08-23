@@ -1,3 +1,4 @@
+import 'package:easypaisa_flutter/easypaisa_flutter.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -7,8 +8,10 @@ import 'package:website_project/views/dashboard_screens/dasboard_screen.dart';
 import 'package:website_project/views/splash_screen/splash_screen.dart';
 
 
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
   await Firebase.initializeApp(
     options: FirebaseOptions(
         apiKey: "AIzaSyBStAOPRM6cuSIBB3KRhtpKycZ9nQOPr5w",
@@ -20,6 +23,12 @@ void main() async {
         measurementId: "G-MWSZG5D6GC"
     ),
   );
+  EasypaisaFlutter.initialize(
+      'rideoptions',
+      'd7d530ae300bf32090a2a0bc932ac708',
+      '25056',
+      true /*is testing account or not*/,
+      AccountType.MA /*Merchant account type either Mobile account or OTC */);
   runApp(MyApp());
 }
 

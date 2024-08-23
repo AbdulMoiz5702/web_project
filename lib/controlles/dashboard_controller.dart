@@ -1,37 +1,52 @@
+import 'package:clipboard/clipboard.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'dart:html' as html;
+import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
+import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 
-
-
-class DashboardController extends GetxController{
-
+class DashboardController extends GetxController {
   void copyToClipboard(String link, BuildContext context) {
-    print('link: $link');
-    html.window.navigator.clipboard?.writeText(link).then((_) {
+    try {
+      if (kIsWeb) {
+        FlutterClipboard.copy(link).then((_) {
+          ScaffoldMessenger.of(context).showSnackBar(
+             SnackBar(
+              content: Text('Referral link copied to clipboard!'),
+              duration: Duration(seconds: 2),
+            ),
+          );
+        }).catchError((error) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Failed to copy referral link on web'),
+              duration: Duration(seconds: 2),
+            ),
+          );
+        });
+      } else {
+        Clipboard.setData(ClipboardData(text: link)).then((_) {
+          ScaffoldMessenger.of(context).showSnackBar(
+             SnackBar(
+              content: Text('Referral link copied to clipboard!'),
+              duration: Duration(seconds: 2),
+            ),
+          );
+        }).catchError((error) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Failed to copy referral link on mobile'),
+              duration: Duration(seconds: 2),
+            ),
+          );
+        });
+      }
+    } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Referral link copied to clipboard!'),
+        SnackBar(
+          content: Text('Exception while copying referral link'),
           duration: Duration(seconds: 2),
         ),
       );
-    }).catchError((error) {
-      ScaffoldMessenger.of(context).showSnackBar(
-         SnackBar(
-          content: Text('${error.toString()}'),
-          duration: Duration(seconds: 2),
-        ),
-      );
-    });
+    }
   }
-
-
-// Clipboard.setData(ClipboardData(text: data['id']));
-// ScaffoldMessenger.of(context).showSnackBar(
-//   SnackBar(
-//     content: Text('Referral Code copied to clipboard'),
-//     duration: Duration(seconds: 1),
-//   ),
-// );
-
 }

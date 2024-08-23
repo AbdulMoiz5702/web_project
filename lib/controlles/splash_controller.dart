@@ -17,7 +17,7 @@ class SplashController extends GetxController {
 
   checkUserStatus() {
     Future.delayed(Duration.zero, () {
-      final userId = currentUser?.uid;
+      final userId = auth.currentUser?.uid;
       if (userId != null) {
         Get.offAll(() => DashBoardScreen(currentUserId: userId));
       } else {

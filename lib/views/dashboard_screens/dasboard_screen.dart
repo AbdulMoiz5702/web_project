@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:website_project/controlles/dashboard_controller.dart';
 import 'package:website_project/services/firestore_services.dart';
+import 'package:website_project/views/deposit_screen/deposit_screen.dart';
 import '../../consts/colors.dart';
 import '../../consts/list_Strings.dart';
 import '../../helpers/main_container.dart';
@@ -152,12 +153,12 @@ class DashBoardScreen extends StatelessWidget {
                                     height: 0,
                                   ),
                                   GestureDetector(
-                                    onTap: () {
-                                      final encodedUsername = Uri.encodeComponent(data['name']);
+                                    onTap: (){
+                                      var encodedUsername = Uri.encodeComponent(data['name']);
                                       final referralLink = 'https://website-4fa8c.web.app/?referrerId=${data['id']}&username=$encodedUsername';
                                       controller.copyToClipboard(referralLink, context);
                                     },
-                                    child: Icon(Icons.copy, color: whiteColor, size: 20),
+                                    child:Icon(Icons.copy, color: whiteColor,size: 20,) ,
                                   )
                                 ],
                               ),
@@ -210,7 +211,9 @@ class DashBoardScreen extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    RoundedButton(title: 'DEPOSIT',imagePath: depositImage,onTap: (){},color: whiteColor,textcolor: blueColor,),
+                    RoundedButton(title: 'DEPOSIT',imagePath: depositImage,onTap: (){
+                      Get.to(()=> DepositScreen());
+                    },color: whiteColor,textcolor: blueColor,),
                     RoundedButton(title: 'WITHDRAW',imagePath: withdrawImage,onTap: (){},color: whiteColor,textcolor: blueColor,),
                     RoundedButton(title: 'INVITE',imagePath: inviteImage,onTap: (){},color: whiteColor,textcolor: blueColor,),
                   ],
