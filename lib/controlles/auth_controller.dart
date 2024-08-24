@@ -98,35 +98,41 @@ class AuthController extends GetxController {
   }
 
   // store user data
-  Future<void> storeUserData(String userId, String? referrerId,String? referrerName) async {
-    DocumentReference store = fireStore.collection(userCollection).doc(userId);
+  Future<void> storeUserData(String userId, String? referrerId, String? referrerName) async {
+    DocumentReference userDocRef = fireStore.collection(userCollection).doc(userId);
 
-    await store.set({
-      'name': name.text.trim(),  // Add other user details here as needed
+    // Store the new user's data
+    await userDocRef.set({
+      'name': name.text.trim(),
       'email': email.text.trim(),
-      'phone': phoneNumber.text.trim(),  // Add other user details here as needed
+      'phone': phoneNumber.text.trim(),
       'password': password.text.trim(),
       'id': userId,
       'wallet': '2000',
       'referredByName': referrerName ?? 'none',
       'referredBy': referrerId ?? 'none',
-      'referrals': FieldValue.arrayUnion([]),
+      'referrals': [],
       'referralCount': 0,
+      'referralBonus': 0,
     });
-
+    // If referrer exists, add 20 bonus to their account
     if (referrerId != null && referrerId.isNotEmpty) {
-      final referrerDocRef = fireStore.collection(userCollection).doc(referrerId);
-      final referrerDoc = await referrerDocRef.get();
-      if (referrerDoc.exists) {
-        final referrals = List<String>.from(referrerDoc.data()?['referrals'] ?? []);
-        if (!referrals.contains(userId)) {
-          referrals.add(userId);
-          await referrerDocRef.update({
-            'referrals': referrals,
-            'referralCount': referrals.length,
-          });
+      DocumentReference referrerDocRef = fireStore.collection(userCollection).doc(referrerId);
+      await fireStore.runTransaction((transaction) async {
+        DocumentSnapshot referrerDoc = await transaction.get(referrerDocRef);
+        if (referrerDoc.exists) {
+          List<dynamic> referrals = referrerDoc.get('referrals') ?? [];
+          if (!referrals.contains(userId)) {
+            referrals.add(userId);
+            transaction.update(referrerDocRef, {
+              'referrals': referrals,
+              'referralCount': referrals.length,
+              'referralBonus': FieldValue.increment(20),
+              'wallet': FieldValue.increment(20), // Add 20 to the wallet
+            });
+          }
         }
-      }
+      });
     }
   }
 }

@@ -2,9 +2,13 @@ import 'package:clipboard/clipboard.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 
 class DashboardController extends GetxController {
+
+  var name = ''.obs;
+  var userId = ''.obs;
   void copyToClipboard(String link, BuildContext context) {
     try {
       if (kIsWeb) {

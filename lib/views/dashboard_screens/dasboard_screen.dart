@@ -13,6 +13,8 @@ import '../../reusables/Rounder_buttons.dart';
 import '../../reusables/custom_sizedBox.dart';
 import '../../reusables/seconday_rounded_button.dart';
 import '../../reusables/text_widgets.dart';
+import '../referal_bonus_button/referal_bonous_button.dart';
+import '../total_teams/total_teams_buttom.dart';
 
 class DashBoardScreen extends StatelessWidget {
   final String currentUserId;
@@ -51,10 +53,12 @@ class DashBoardScreen extends StatelessWidget {
                   );
                 } else if (snapshot.hasData) {
                   var data = snapshot.data!.data() as Map<String, dynamic>;
+                  controller.name.value = data['name'];
+                  controller.userId.value = data['id'];
                   return Container(
                     margin: EdgeInsets.all(5),
                     padding: EdgeInsets.symmetric(horizontal: 12,vertical: 8),
-                    height: MediaQuery.sizeOf(context).height * 0.27,
+                    height: MediaQuery.sizeOf(context).height * 0.25,
                     width: MediaQuery.sizeOf(context).width * 1,
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(15),
@@ -134,49 +138,10 @@ class DashBoardScreen extends StatelessWidget {
                                     height: 0.01,
                                     width: 0,
                                   ),
-                                  data['referredByName'] == 'none'? smallText(title: 'No referral', color: whiteColor,) :  largeText(title: data['referredByName'], color: whiteColor,fontSize: 16),
+                                  data['referredByName'] == 'none'? smallText(title: 'No referral', color: whiteColor,) :  largeText(title: data['referredByName'], color: whiteColor,fontSize: 18),
                                 ]),
                           ],
                         ),
-                        Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                children: [
-                                  mediumText(
-                                      title: 'Referral Code :',
-                                      color: whiteColor.withOpacity(0.5),
-                                      fontWeight: FontWeight.w400,fontSize: 12),
-                                  Sized(
-                                    width: 0.01,
-                                    height: 0,
-                                  ),
-                                  GestureDetector(
-                                    onTap: (){
-                                      var encodedUsername = Uri.encodeComponent(data['name']);
-                                      final referralLink = 'https://website-4fa8c.web.app/?referrerId=${data['id']}&username=$encodedUsername';
-                                      controller.copyToClipboard(referralLink, context);
-                                    },
-                                    child:Icon(Icons.copy, color: whiteColor,size: 20,) ,
-                                  )
-                                ],
-                              ),
-                              Sized(
-                                height: 0.005,
-                                width: 0,
-                              ),
-                              Container(
-                                height: 1,
-                                width: MediaQuery.sizeOf(context).width * 0.3,
-                                color: whiteColor,
-                              ),
-                              Sized(
-                                height: 0.02,
-                                width: 0,
-                              ),
-                              smallText(title: data['id'], color: whiteColor,fontWeight: FontWeight.bold,),
-                            ]),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -186,9 +151,9 @@ class DashBoardScreen extends StatelessWidget {
                               alignment: Alignment.center,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(5),
-                                color: whiteColor,
+                                color: primaryTextColor,
                               ),
-                              child: mediumText(title: ' Rs ${data['wallet']}  ',color: blueColor,fontWeight: FontWeight.bold,fontSize: 18),
+                              child: mediumText(title: ' Rs: ${data['wallet'].toString()}  ',color: whiteColor,fontWeight: FontWeight.bold,fontSize: 18),
                             )
                           ],
                         ),
@@ -215,7 +180,13 @@ class DashBoardScreen extends StatelessWidget {
                       Get.to(()=> DepositScreen());
                     },color: whiteColor,textcolor: blueColor,),
                     RoundedButton(title: 'WITHDRAW',imagePath: withdrawImage,onTap: (){},color: whiteColor,textcolor: blueColor,),
-                    RoundedButton(title: 'INVITE',imagePath: inviteImage,onTap: (){},color: whiteColor,textcolor: blueColor,),
+                    RoundedButton(title: 'INVITE',imagePath: inviteImage,onTap: (){
+                      print(controller.name.value);
+                      print(controller.userId.value);
+                      var encodedUsername = Uri.encodeComponent(controller.name.value);
+                      final referralLink = 'https://website-4fa8c.web.app/?referrerId=${controller.userId.value}&username=$encodedUsername';
+                      controller.copyToClipboard(referralLink, context);
+                    },color: whiteColor,textcolor: blueColor,),
                   ],
                 ),
               ),
@@ -242,8 +213,8 @@ class DashBoardScreen extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           SecondaryRoundedButton(title: 'Team',subTitle: 'Investment',wallet: 'RS 370',imagePath: teamInvestmentImage,onTap: (){},color: primaryTextColor,textcolor: whiteColor,),
-                          SecondaryRoundedButton(title: 'Total',subTitle: 'Refer Bonus',wallet: 'RS 70',imagePath: totalBonusImage,onTap: (){},color: primaryTextColor,textcolor: whiteColor,),
-                          SecondaryRoundedButton(title: 'Total',subTitle: 'Teams',wallet: '7',imagePath: totalTeamsImage,onTap: (){},color: primaryTextColor,textcolor: whiteColor,),
+                          ReferalBonousButton(userId:currentUserId,),
+                          TotalTeamsButton(userId: currentUserId,),
                         ],
                       ),
                     ),
