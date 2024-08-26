@@ -36,7 +36,7 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
   firebase_core:
-  firebase_auth_web: ^5.12.5
+  firebase_auth_web:
   cloud_firestore:
   firebase_storage:
   get:
@@ -44,7 +44,8 @@ dependencies:
   shimmer:
   uni_links:
   clipboard:
-  easypaisa_flutter: ^1.0.3
+  web: ^0.4.0
+#  easypaisa_flutter:
   http:
 
 dev_dependencies:

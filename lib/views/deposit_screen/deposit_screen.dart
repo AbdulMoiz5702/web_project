@@ -1,4 +1,3 @@
-import 'package:easypaisa_flutter/easypaisa_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:website_project/reusables/toast_class.dart';
@@ -68,7 +67,7 @@ class _DepositScreenState extends State<DepositScreen> {
                 ToastClass.showToastClass(context: context, message:"Please enter amount");
               } else {
                 print("On Tapped");
-                makePayment();
+                // makePayment();
               }
             },
             child: Text(
@@ -83,17 +82,17 @@ class _DepositScreenState extends State<DepositScreen> {
     );
   }
 
-  void makePayment() async {
-    try{
-      Response response = await EasypaisaFlutter.requestPayment(
-        amount: paymentAmountController.text.trim(),
-        accountNo: accountNumberController.text.trim(),
-        email: emailController.text.trim(),
-      );
-      print(response.body);
-    }catch(e,s){
-      print(e);
-      print(s);
-    }
-  }
+  // void makePayment() async {
+  //   try{
+  //     Response response = await EasypaisaFlutter.requestPayment(
+  //       amount: paymentAmountController.text.trim(),
+  //       accountNo: accountNumberController.text.trim(),
+  //       email: emailController.text.trim(),
+  //     );
+  //     print(response.body);
+  //   }catch(e,s){
+  //     print(e);
+  //     print(s);
+  //   }
+  // }
 }

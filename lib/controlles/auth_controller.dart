@@ -108,7 +108,7 @@ class AuthController extends GetxController {
       'phone': phoneNumber.text.trim(),
       'password': password.text.trim(),
       'id': userId,
-      'wallet': '2000',
+      'wallet': 0,
       'referredByName': referrerName ?? 'none',
       'referredBy': referrerId ?? 'none',
       'referrals': [],

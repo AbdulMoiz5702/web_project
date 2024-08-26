@@ -1,4 +1,3 @@
-import 'package:easypaisa_flutter/easypaisa_flutter.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -23,12 +22,12 @@ void main() async {
         measurementId: "G-MWSZG5D6GC"
     ),
   );
-  EasypaisaFlutter.initialize(
-      'rideoptions',
-      'd7d530ae300bf32090a2a0bc932ac708',
-      '25056',
-      true /*is testing account or not*/,
-      AccountType.MA /*Merchant account type either Mobile account or OTC */);
+  // EasypaisaFlutter.initialize(
+  //     'rideoptions',
+  //     'd7d530ae300bf32090a2a0bc932ac708',
+  //     '25056',
+  //     true /*is testing account or not*/,
+  //     AccountType.MA /*Merchant account type either Mobile account or OTC */);
   runApp(MyApp());
 }
 
